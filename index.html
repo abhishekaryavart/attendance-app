@@ -537,19 +537,22 @@
             /* Simplified for demo */
         }
     </style>
-    <script>
-        const MOBILE_APP_DOWNLOAD_URL = "PASTE_MOBILE_GOOGLE_DRIVE_LINK_HERE";
-        const DESKTOP_APP_DOWNLOAD_URL = "PASTE_DESKTOP_GOOGLE_DRIVE_LINK_HERE";
+   <script>
+    const MOBILE_APP_DOWNLOAD_URL =
+        "https://drive.google.com/uc?export=download&id=1qzY2D8hyIev7pZm4dQSsLeT9JvR80ZUj";
 
-        function downloadApp(type) {
-            const url = type === 'mobile' ? https://drive.google.com/file/d/1qzY2D8hyIev7pZm4dQSsLeT9JvR80ZUj/view?usp=sharing : https://drive.google.com/file/d/1kElRp8GdtIzNrMls2XFxBlOTicnYjcMQ/view?usp=sharing;
-            if (url.includes("PASTE")) {
-                alert("Download link not configured yet. Please update the URL.");
-            } else {
-                window.open(url, '_blank');
-            }
-        }
-    </script>
+    const DESKTOP_APP_DOWNLOAD_URL =
+        "https://drive.google.com/uc?export=download&id=1kElRp8GdtIzNrMls2XFxBlOTicnYjcMQ";
+
+    function downloadApp(type) {
+        const url = type === "mobile"
+            ? MOBILE_APP_DOWNLOAD_URL
+            : DESKTOP_APP_DOWNLOAD_URL;
+
+        window.open(url, "_blank");
+    }
+</script>
+
 </head>
 
 <body>
