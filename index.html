@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IndicPro | Smart QR Attendance for Modern Schools</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4F46E5;
+            --primary-light: #6366F1;
+            --secondary: #10B981;
+            --bg-color: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --card-border: rgba(255, 255, 255, 0.1);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --gradient-text: linear-gradient(135deg, #fff 0%, #cbd5e1 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Abstract Background Elements */
+        .bg-element {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(100px);
+            z-index: -1;
+            opacity: 0.15;
+            pointer-events: none;
+        }
+
+        .bg-el-1 {
+            top: 10%;
+            left: 10%;
+            width: 500px;
+            height: 500px;
+            background: var(--primary);
+        }
+
+        .bg-el-2 {
+            bottom: 10%;
+            right: 10%;
+            width: 400px;
+            height: 400px;
+            background: var(--secondary);
+        }
+
+        /* Navbar */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--card-border);
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo span {
+            color: var(--primary-light);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-light);
+        }
+
+        .btn-nav-cta {
+            background: var(--primary);
+            color: #fff;
+            padding: 0.5rem 1.2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .btn-nav-cta:hover {
+            background: #4338ca;
+        }
+
+        /* Common Section Styles */
+        section {
+            padding: 6rem 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .subtitle {
+            color: var(--primary-light);
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: var(--gradient-text);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.8rem 1.8rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(79, 70, 229, 0.6);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            border: 1px solid var(--card-border);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* HERO - Sec 1 */
+        .hero {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 4rem;
+            padding-top: 10rem;
+            min-height: 100vh;
+        }
+
+        .hero-content {
+            flex: 1;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            background: var(--gradient-text);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            margin-bottom: 2.5rem;
+            max-width: 500px;
+        }
+
+        .hero-btns {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .hero-img {
+            flex: 1;
+            text-align: center;
+        }
+
+        .hero-img img {
+            width: 100%;
+            max-width: 600px;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        /* PROBLEM - Sec 2 & HOW IT WORKS - Sec 3 (Grid layouts) */
+        .split-section {
+            display: flex;
+            align-items: center;
+            gap: 4rem;
+            margin-bottom: 4rem;
+        }
+
+        .split-reverse {
+            flex-direction: row-reverse;
+        }
+
+        .split-text {
+            flex: 1;
+        }
+
+        .split-img {
+            flex: 1;
+            text-align: center;
+        }
+
+        .split-img img {
+            width: 100%;
+            max-width: 500px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--card-border);
+        }
+
+        .check-list {
+            list-style: none;
+            margin-top: 1.5rem;
+        }
+
+        .check-list li {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            color: var(--text-muted);
+        }
+
+        .check-list li::before {
+            content: '❌';
+            font-size: 1rem;
+        }
+
+        .check-list.positive li::before {
+            content: '✅';
+        }
+
+        /* GRID CARDS (Used for Features, Roles, Benefits, Security) */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 24px;
+            padding: 2.5rem 2rem;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            transition: all 0.4s;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            display: inline-block;
+        }
+
+        .card h3 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #fff;
+        }
+
+        .card p {
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
+        /* Who Uses IndicPro specific (from previous code) */
+        .img-container {
+            width: 160px;
+            height: 160px;
+            margin: 0 auto 1.5rem;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        /* FLOW DIAGRAM - Sec 11 */
+        .flow-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .flow-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 2px;
+            background: var(--card-border);
+            z-index: 1;
+            transform: translateX(-50%);
+        }
+
+        .flow-step {
+            position: relative;
+            z-index: 2;
+            background: var(--card-bg);
+            border: 1px solid var(--primary);
+            padding: 1.5rem;
+            border-radius: 16px;
+            margin-bottom: 2rem;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s;
+        }
+
+        .flow-step:hover {
+            transform: scale(1.05);
+            border-color: var(--secondary);
+            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.2);
+        }
+
+        .flow-step h4 {
+            color: #fff;
+            font-size: 1.2rem;
+        }
+
+        .flow-arrow {
+            font-size: 1.5rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 2;
+            background: var(--bg-color);
+            padding: 0.5rem;
+            border-radius: 50%;
+        }
+
+        /* CTA Download / Onboarding */
+        .cta-box {
+            background: linear-gradient(135deg, rgba(79, 70, 229, 0.1), rgba(16, 185, 129, 0.1));
+            border: 1px solid var(--primary-light);
+            padding: 4rem 2rem;
+            border-radius: 24px;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        .cta-box h2 {
+            margin-bottom: 1rem;
+        }
+
+        .cta-box p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-inline: auto;
+        }
+
+        .download-cards {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-top: 3rem;
+        }
+
+        .dl-card {
+            flex: 1;
+            min-width: 250px;
+            max-width: 350px;
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 16px;
+            border: 1px solid var(--card-border);
+        }
+
+        .dl-card h3 {
+            color: #fff;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--card-border);
+            padding: 3rem 5%;
+            text-align: center;
+            color: var(--text-muted);
+            margin-top: 5rem;
+        }
+
+        footer .f-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 1rem;
+        }
+
+        footer a {
+            color: var(--primary-light);
+            text-decoration: none;
+        }
+
+        @media (max-width: 900px) {
+
+            .split-section,
+            .hero {
+                flex-direction: column;
+                text-align: center;
+                padding-top: 6rem;
+                gap: 2rem;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-btns {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+
+            .check-list li {
+                justify-content: center;
+            }
+
+            nav .nav-links {
+                display: none;
+            }
+
+            /* Simplified for demo */
+        }
+    </style>
+    <script>
+        const MOBILE_APP_DOWNLOAD_URL = "PASTE_MOBILE_GOOGLE_DRIVE_LINK_HERE";
+        const DESKTOP_APP_DOWNLOAD_URL = "PASTE_DESKTOP_GOOGLE_DRIVE_LINK_HERE";
+
+        function downloadApp(type) {
+            const url = type === 'mobile' ? MOBILE_APP_DOWNLOAD_URL : DESKTOP_APP_DOWNLOAD_URL;
+            if (url.includes("PASTE")) {
+                alert("Download link not configured yet. Please update the URL.");
+            } else {
+                window.open(url, '_blank');
+            }
+        }
+    </script>
+</head>
+
+<body>
+
+    <div class="bg-element bg-el-1"></div>
+    <div class="bg-element bg-el-2"></div>
+
+    <nav>
+        <a href="#" class="logo">Indic<span>Pro</span></a>
+        <div class="nav-links">
+            <a href="#how-it-works">How it Works</a>
+            <a href="#features">Features</a>
+            <a href="#who-uses">Who Uses It</a>
+            <a href="#download">Download</a>
+        </div>
+        <a href="#contact" class="btn-nav-cta">Connect School</a>
+    </nav>
+
+    <!-- 1. HERO -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <span class="subtitle">Smart QR Attendance for Modern Schools</span>
+            <h1>Attendance Management, Simplified.</h1>
+            <p>Replace paper registers with dynamic, secure QR codes. Bring the power of fast, digital and error-free
+                attendance management directly to your teachers and admin.</p>
+            <div class="hero-btns">
+                <a href="#contact" class="btn btn-primary">Connect Your School</a>
+                <a href="#download" class="btn btn-secondary">Download App</a>
+            </div>
+        </div>
+        <div class="hero-img">
+            <img src="assets/hero.png" alt="IndicPro Smart QR Scanning">
+        </div>
+    </section>
+
+    <!-- 2. PROBLEM SECTION -->
+    <section class="split-section split-reverse" id="problem">
+        <div class="split-text">
+            <span class="subtitle">The Problem</span>
+            <h2>Traditional Attendance is Messy & Slow</h2>
+            <p>Manual registers create bottlenecks, human errors, and significant reporting difficulties. Why spend
+                hours computing monthly reports manually?</p>
+            <ul class="check-list">
+                <li>Messy, manual paper registers</li>
+                <li>Highly time-consuming for teachers</li>
+                <li>Prone to proxy attendance & human errors</li>
+                <li>Painful and slow monthly report generation</li>
+            </ul>
+        </div>
+        <div class="split-img">
+            <img src="assets/problem.png" alt="Traditional Attendance Problems">
+        </div>
+    </section>
+
+    <!-- 3. HOW IT WORKS -->
+    <section class="split-section" id="how-it-works">
+        <div class="split-text">
+            <span class="subtitle">The Solution</span>
+            <h2>How IndicPro Works</h2>
+            <p>A seamless connection between your school's desktop and the teacher's mobile device. Authorized staff
+                displays a dynamic QR code, and teachers simply scan it.</p>
+            <ul class="check-list positive">
+                <li>QR Staff opens the QR page via Desktop Portal</li>
+                <li>System generates a fast, Dynamic QR</li>
+                <li>Teachers scan using the IndicPro Mobile App</li>
+                <li>Backend securely validates identity & location</li>
+                <li>Attendance accurately marked & reported in real-time</li>
+            </ul>
+        </div>
+        <div class="split-img">
+            <!-- Reuse hero img or custom flow -->
+            <img src="assets/hero.png" alt="How IndicPro Works">
+        </div>
+    </section>
+
+    <!-- 4. HOW QR WORKS & 10. SECURITY (Combined for elegance) -->
+    <section class="split-section split-reverse" id="security">
+        <div class="split-text">
+            <span class="subtitle">Secure & Reliable</span>
+            <h2>Next-Gen Dynamic QR Security</h2>
+            <p>Our QR codes aren't just static images. They change dynamically, ensuring proxy attendance is completely
+                blocked.</p>
+            <ul class="check-list positive">
+                <li><strong>Short Validity:</strong> QR code expires quickly, refreshing automatically</li>
+                <li><strong>Server Validation:</strong> Deep cryptographic validation on the server</li>
+                <li><strong>Expired QR Rejection:</strong> No one can scan a photo of an old QR</li>
+                <li><strong>Protected Records:</strong> Secure login with strict access roles</li>
+            </ul>
+        </div>
+        <div class="split-img">
+            <img src="assets/security.png" alt="QR Security & Flow">
+        </div>
+    </section>
+
+    <!-- 5. MOBILE + DESKTOP APP -->
+    <section class="split-section" id="platforms">
+        <div class="split-text">
+            <span class="subtitle">Two Powerful Platforms</span>
+            <h2>Made for Teachers & Schools</h2>
+            <p>We provide specialized tools tailored for the user context. Whether you are on the move or managing the
+                school, IndicPro is ready.</p>
+            <ul class="check-list positive">
+                <li><strong>Teacher Mobile App:</strong> Blazing fast QR scanner, history, and personal reports</li>
+                <li><strong>School Desktop App:</strong> Powerful dashboard, live QR display, and deep analytics</li>
+            </ul>
+            <br>
+            <a href="#download" class="btn btn-primary">Get the Apps</a>
+        </div>
+        <div class="split-img">
+            <img src="assets/apps.png" alt="IndicPro Mobile and Desktop mockups">
+        </div>
+    </section>
+
+    <!-- 6. FEATURES -->
+    <section id="features">
+        <div class="section-header">
+            <span class="subtitle">Everything You Need</span>
+            <h2>Comprehensive Features</h2>
+        </div>
+        <div class="cards-grid">
+            <div class="card">
+                <span class="card-icon">⚡</span>
+                <h3>Dynamic QR</h3>
+                <p>Fast, changing QR codes that prevent proxies and ensure extreme accuracy.</p>
+            </div>
+            <div class="card">
+                <span class="card-icon">⏱️</span>
+                <h3>IN / OUT Tracking</h3>
+                <p>Precisely track both entry and exit times, with smart late attendance handling.</p>
+            </div>
+            <div class="card">
+                <span class="card-icon">📊</span>
+                <h3>Instant Reports</h3>
+                <p>Generate Date-wise and Teacher-wise Excel/PDF reports with just one click.</p>
+            </div>
+            <div class="card">
+                <span class="card-icon">📱</span>
+                <h3>Mobile & Desktop</h3>
+                <p>Dedicated Teacher Mobile App & authoritative School Desktop Portal.</p>
+            </div>
+            <div class="card">
+                <span class="card-icon">🔔</span>
+                <h3>Smart Notifications</h3>
+                <p>Real-time updates and attendance alerts delivered directly to the app.</p>
+            </div>
+            <div class="card">
+                <span class="card-icon">🏢</span>
+                <h3>School-wise Setup</h3>
+                <p>Secure, isolated databases managing attendance cleanly per school.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. WHY CHOOSE INDICPRO -->
+    <section class="cta-box" style="margin: 4rem 5%;">
+        <span class="subtitle" style="color: var(--secondary)">Why Upgrade?</span>
+        <h2>Why Schools Choose IndicPro</h2>
+        <p>Switching from manual to digital attendance management brings immediate ROI. Save countless hours, reduce all
+            paperwork to zero, achieve 100% accuracy by eliminating human errors, and provide management with an
+            incredibly easy-to-use system for faster reporting and live monitoring.</p>
+    </section>
+
+    <!-- 8. WHO USES INDICPRO -->
+    <section id="who-uses">
+        <div class="section-header">
+            <span class="subtitle">Platform Ecosystem</span>
+            <h2>Who Uses IndicPro?</h2>
+        </div>
+        <div class="cards-grid">
+            <div class="card">
+                <div class="img-container"><img src="assets/teacher_admin.png" alt="Teacher Admin"></div>
+                <h3>Teacher Admin</h3>
+                <p>Manage daily attendance, teachers, reports and school attendance activities from the desktop portal.
+                </p>
+            </div>
+            <div class="card">
+                <div class="img-container"><img src="assets/teacher_mobile.png" alt="Teacher"></div>
+                <h3>Teacher</h3>
+                <p>Use the IndicPro mobile app to safely scan the QR code and mark IN/OUT attendance, view history and
+                    reports.</p>
+            </div>
+            <div class="card">
+                <div class="img-container"><img src="assets/qr_staff.png" alt="QR Staff"></div>
+                <h3>QR Staff</h3>
+                <p>Display and manage the dynamic attendance QR from the authorized desktop system for quick scanning.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 9. SCHOOL ADMIN BENEFITS -->
+    <section id="benefits">
+        <div class="section-header">
+            <span class="subtitle">Management View</span>
+            <h2>School Admin Benefits</h2>
+        </div>
+        <div class="cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+            <div class="card" style="padding: 1.5rem;">
+                <h3>Live Visibility</h3>
+                <p>See Today's attendance instantly (Present/Late/Absent)</p>
+            </div>
+            <div class="card" style="padding: 1.5rem;">
+                <h3>Teacher Records</h3>
+                <p>Deep-dive into specific Teacher-wise tracking records</p>
+            </div>
+            <div class="card" style="padding: 1.5rem;">
+                <h3>Date Reports</h3>
+                <p>Effortlessly pull full Date-wise attendance reports</p>
+            </div>
+            <div class="card" style="padding: 1.5rem;">
+                <h3>Export Data</h3>
+                <p>One-click professional Excel & PDF data exporting</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 11. ATTENDANCE FLOW -->
+    <section id="flow">
+        <div class="section-header">
+            <span class="subtitle">Visual Concept</span>
+            <h2>The Attendance Flow</h2>
+        </div>
+        <div class="flow-container">
+            <div class="flow-step">
+                <h4>🖥️ QR STAFF / DESKTOP</h4>
+            </div>
+            <div class="flow-arrow">↓</div>
+            <div class="flow-step">
+                <h4>🔲 DYNAMIC QR GENERATED</h4>
+            </div>
+            <div class="flow-arrow">↓</div>
+            <div class="flow-step">
+                <h4>📱 TEACHER MOBILE APP SCANS</h4>
+            </div>
+            <div class="flow-arrow">↓</div>
+            <div class="flow-step">
+                <h4>🔒 SERVER SECURITY VALIDATION</h4>
+            </div>
+            <div class="flow-arrow">↓</div>
+            <div class="flow-step" style="border-color: var(--secondary);">
+                <h4>✅ ATTENDANCE MARKED</h4>
+            </div>
+            <div class="flow-arrow">↓</div>
+            <div class="flow-step">
+                <h4>📊 ADMIN REPORT UPDATED</h4>
+            </div>
+        </div>
+    </section>
+
+    <!-- 12. ONBOARDING & 14. CTA & 15. CONTACT -->
+    <section class="cta-box" id="contact">
+        <h2>Bring IndicPro to Your School</h2>
+        <p>Ready to Make Attendance Smarter? Bring secure, paperless and efficient QR attendance to your institution
+            today.</p>
+
+        <div
+            style="text-align: left; max-width: 400px; margin: 2rem auto; background: var(--card-bg); padding: 2rem; border-radius: 12px; border: 1px solid var(--card-border);">
+            <h4 style="margin-bottom: 1rem; color: var(--primary-light);">Onboarding Steps:</h4>
+            <ol style="margin-left: 1.5rem; color: var(--text-muted); line-height: 2;">
+                <li>Contact IndicPro</li>
+                <li>School Setup & Registration</li>
+                <li>Add Teacher Profiles</li>
+                <li>Start QR Attendance!</li>
+            </ol>
+        </div>
+
+        <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+            <a href="#" class="btn btn-primary">Connect Your School</a>
+            <a href="#" class="btn btn-secondary">Request a Demo</a>
+        </div>
+    </section>
+
+    <!-- 13. DOWNLOAD -->
+    <section id="download" style="padding-bottom: 2rem;">
+        <div class="section-header">
+            <span class="subtitle">Get Started</span>
+            <h2>Download IndicPro</h2>
+        </div>
+        <div class="download-cards">
+            <div class="dl-card">
+                <h3>Teacher Mobile App</h3>
+                <button onclick="downloadApp('mobile')" class="btn btn-primary" style="width: 100%;">Download
+                    APK</button>
+            </div>
+            <div class="dl-card">
+                <h3>School Desktop App</h3>
+                <button onclick="downloadApp('desktop')" class="btn btn-secondary" style="width: 100%;">Download
+                    EXE</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 16. FOOTER -->
+    <footer>
+        <div class="f-logo">Indic<span>Pro</span></div>
+        <p>Your School's Modern Attendance Partner</p>
+        <p style="margin-top: 1rem; font-size: 0.9rem;">
+            <a href="https://indicpro.com" target="_blank">indicpro.com</a>
+        </p>
+        <p style="margin-top: 2rem; font-size: 0.8rem;">
+            &copy; IndicPro.com | All Rights Reserved
+        </p>
+    </footer>
+
+</body>
+
+</html>
