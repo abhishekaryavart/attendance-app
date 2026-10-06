@@ -537,21 +537,26 @@
             /* Simplified for demo */
         }
     </style>
-   <script>
-    const MOBILE_APP_DOWNLOAD_URL =
-        "https://drive.google.com/uc?export=download&id=1qzY2D8hyIev7pZm4dQSsLeT9JvR80ZUj";
+    <script>
+        const MOBILE_APP_DOWNLOAD_URL =
+            "https://drive.google.com/uc?export=download&id=1qzY2D8hyIev7pZm4dQSsLeT9JvR80ZUj";
 
-    const DESKTOP_APP_DOWNLOAD_URL =
-        "https://drive.google.com/uc?export=download&id=1kElRp8GdtIzNrMls2XFxBlOTicnYjcMQ";
+        const DESKTOP_APP_DOWNLOAD_URL =
+            "https://drive.google.com/uc?export=download&id=1kElRp8GdtIzNrMls2XFxBlOTicnYjcMQ";
 
-    function downloadApp(type) {
-        const url = type === "mobile"
-            ? MOBILE_APP_DOWNLOAD_URL
-            : DESKTOP_APP_DOWNLOAD_URL;
+        function downloadApp(type) {
+            const url = type === "mobile"
+                ? MOBILE_APP_DOWNLOAD_URL
+                : DESKTOP_APP_DOWNLOAD_URL;
 
-        window.open(url, "_blank");
-    }
-</script>
+            const a = document.createElement('a');
+            a.href = url;
+            a.target = '_blank';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+    </script>
 
 </head>
 
@@ -854,15 +859,14 @@
             Developed by IndicPro in collaboration with NGAS.
         </p>
 
-       <div style="margin-top: 2rem; font-size: 0.95rem; line-height: 1.8;">
-    <p style="color: var(--primary-light); font-weight: 600;">Contact:</p>
-    <p style="margin-bottom: 0.2rem;">Mr. Vinod Kumar Das</p>
-    <p style="margin-top: 0; color: var(--text-muted);">Principal &amp; Director, NGAS</p>
-    <a href="tel:+919939312648"
-        style="color: var(--text-main); text-decoration: none; font-weight: 500;">
-        +91 99393 12648
-    </a>
-</div>
+        <div style="margin-top: 2rem; font-size: 0.95rem; line-height: 1.8;">
+            <p style="color: var(--primary-light); font-weight: 600;">Contact:</p>
+            <p style="margin-bottom: 0.2rem;">Mr. Vinod Kumar Das</p>
+            <p style="margin-top: 0; color: var(--text-muted);">Principal &amp; Director, NGAS</p>
+            <a href="tel:+919939312648" style="color: var(--text-main); text-decoration: none; font-weight: 500;">
+                +91 99393 12648
+            </a>
+        </div>
 
         <p style="margin-top: 2rem; font-size: 0.8rem;">
             &copy; IndicPro.com | All Rights Reserved
